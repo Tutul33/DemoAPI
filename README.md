@@ -1,7 +1,7 @@
 # Sonali.API – ASP.NET Core 8 Web API (Clean Architecture)
 
 ## 📌 Overview
-
+[Sonali API Documentation](https://github.com/Tutul33/DemoAPI/blob/master/sonali_api_documentation.md)
 **Sonali.API** is an ASP.NET Core 8 Web API project following **Clean Architecture** principles.\
 It separates concerns into distinct layers for maintainability, scalability, and testability.
 

@@ -472,8 +472,7 @@ public class VoucherControllerIntegrationTests : IClassFixture<WebApplicationFac
 | Unit Test        | DomainService (ADO.NET queries) | XUnit + Moq                   |
 | Integration Test | API Controllers + Middleware    | XUnit + WebApplicationFactory |
 
-## Database Link
-https://drive.google.com/file/d/1vISzFDV8yXHbz7pLYNXk5PH2xk8mgqkY/view?usp=drive_link
+
 
 
 

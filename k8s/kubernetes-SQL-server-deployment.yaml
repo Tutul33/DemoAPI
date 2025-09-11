@@ -2,7 +2,7 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: mssql-pvc
-  namespace: sonali
+  namespace: dep-app
 spec:
   accessModes:
     - ReadWriteOnce
@@ -14,7 +14,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mssql
-  namespace: sonali
+  namespace: dep-app
 spec:
   replicas: 1
   selector:
@@ -55,7 +55,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: mssql
-  namespace: sonali
+  namespace: dep-app
 spec:
   type: NodePort        # ✅ Change from ClusterIP to NodePort
   selector:

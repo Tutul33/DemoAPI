@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: sonali-ingress
-  namespace: sonali
+  namespace: dep-app
   annotations:
     # Rewrite backend paths to root if needed
     nginx.ingress.kubernetes.io/rewrite-target: /

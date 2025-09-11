@@ -1,6 +1,6 @@
 # Kubernetes Deployment Documentation
 
-This document contains an overview of the Kubernetes manifests used for deploying the SQL Server, Backend API, Redis, Ingress, and Namespace creation for the project.
+This document contains an overview of the Kubernetes manifests used for deploying the SQL Server, Backend API, Redis, Frontend, Ingress, and Namespace creation for the project.
 
 ---
 
@@ -246,7 +246,66 @@ kubectl apply -f kubernetes-SQL-server-deployment.yaml
 
 ---
 
-## 5. Ingress
+## 5. Frontend Deployment
+
+**File:** `kubernetes-frontend-deployment.yaml`
+
+**Purpose:** Deploy the Angular frontend application.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: dep-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: tutulchakma/sonalierpext-sol-app:latest
+        ports:
+          - containerPort: 80
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "250m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: dep-app
+spec:
+  type: NodePort
+  selector:
+    app: frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31919
+```
+
+**Apply:**
+
+```bash
+kubectl apply -f kubernetes-frontend-deployment.yaml
+```
+
+---
+
+## 6. Ingress
 
 **File:** `kubernetes-ingress.yaml`
 
@@ -299,7 +358,8 @@ kubectl apply -f kubernetes-ingress.yaml
 2. **Backend API:** .NET service deployment with NodePort.
 3. **Redis:** caching service with liveness and readiness probes.
 4. **SQL Server:** database deployment with PVC and NodePort.
-5. **Ingress:** exposes frontend and backend externally.
+5. **Frontend:** Angular SPA with NodePort.
+6. **Ingress:** exposes frontend and backend externally.
 
 **Next Steps:**
 
@@ -314,5 +374,4 @@ kubectl get all -n dep-app
 
 ---
 
-This markdown can be saved as `Kubernetes_Deployment_Documentation.md` and shared or downloaded.
 

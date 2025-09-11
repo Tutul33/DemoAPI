@@ -20,7 +20,7 @@ This architecture ensures separation of concerns, CQRS pattern adoption, and fle
 
 ---
 ## Database
-[Database](https://drive.google.com/file/d/1im17SJuMNFCnU4DdxNs7047mh6Acvzzp/view?usp=sharing)
+[Database Download](https://drive.google.com/file/d/1im17SJuMNFCnU4DdxNs7047mh6Acvzzp/view?usp=sharing)
 
 ---
 ## 🏗️ Project Structure

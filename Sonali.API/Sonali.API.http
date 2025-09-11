@@ -1,0 +1,6 @@
+@Sonali.API_HostAddress = http://localhost:5020
+
+GET {{Sonali.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

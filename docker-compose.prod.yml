@@ -1,0 +1,5 @@
+services:
+  sonali-api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ConnectionStrings__MsSqlConnectionString=${PROD_DB_CONN}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name= "sp_DataPrint" >
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Id" type= "xs:int" nillable="true"  />
+				<xs:element name="Name" type= "xs:string" nillable="true"  />				
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

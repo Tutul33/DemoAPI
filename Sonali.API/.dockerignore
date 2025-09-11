@@ -1,0 +1,8 @@
+**/bin/
+**/obj/
+**/*.md
+**/*.user
+**/*.suo
+Sonali.API.Tests/
+.vscode/
+.git/

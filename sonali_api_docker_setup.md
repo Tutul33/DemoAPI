@@ -31,7 +31,7 @@ ASPNETCORE_ENVIRONMENT=Development
 DEV_DB_CONN=Server=host.docker.internal,1433;Database=LogicalTestDB;User Id=sa;Password=Sli@2025#;TrustServerCertificate=True
 
 # Production SQL Server (remote)
-PROD_DB_CONN=Server=172.17.20.104;Database=LogicalTestDB;User Id=seTutul;Password=yK829>ug;TrustServerCertificate=True
+PROD_DB_CONN=Server=********;Database=LogicalTestDB;User Id=seTutul;Password=yK829>ug;TrustServerCertificate=True
 
 # SQL Server container SA password
 MSSQL_SA_PASSWORD=Your_strong_password123

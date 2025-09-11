@@ -28,7 +28,7 @@ This architecture ensures separation of concerns, CQRS pattern adoption, and fle
 
 ---
 ## Kubernentes Orchestration 
-[Docker Build Documentation](https://github.com/Tutul33/DemoAPI/blob/master/sonali_api_docker_setup.md)
+[Docker Build Documentation](https://github.com/Tutul33/DemoAPI/blob/master/kubernetes_deploy_docs.md)
 
 ---
 ## 🏗️ Project Structure

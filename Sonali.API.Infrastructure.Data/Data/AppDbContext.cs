@@ -32,11 +32,23 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Accgl2025> Accgl2025s { get; set; }
 
+    public virtual DbSet<AccountGroup> AccountGroups { get; set; }
+
+    public virtual DbSet<AccountHead> AccountHeads { get; set; }
+
     public virtual DbSet<AppUser> AppUsers { get; set; }
+
+    public virtual DbSet<Branch> Branches { get; set; }
 
     public virtual DbSet<ChatFile> ChatFiles { get; set; }
 
     public virtual DbSet<ChatMessage> ChatMessages { get; set; }
+
+    public virtual DbSet<Company> Companies { get; set; }
+
+    public virtual DbSet<FinancialYear> FinancialYears { get; set; }
+
+    public virtual DbSet<LockEntry> LockEntries { get; set; }
 
     public virtual DbSet<PayDepartment> PayDepartments { get; set; }
 
@@ -47,6 +59,14 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<PayEmployeesBasicInfo> PayEmployeesBasicInfoes { get; set; }
 
     public virtual DbSet<PayRole> PayRoles { get; set; }
+
+    public virtual DbSet<SubLedger> SubLedgers { get; set; }
+
+    public virtual DbSet<VoucherAudit> VoucherAudits { get; set; }
+
+    public virtual DbSet<VoucherEntry> VoucherEntries { get; set; }
+
+    public virtual DbSet<VoucherHeader> VoucherHeaders { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer("Name=MsSqlConnectionString");
@@ -205,6 +225,51 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.VoucherNo).HasMaxLength(50);
         });
 
+        modelBuilder.Entity<AccountGroup>(entity =>
+        {
+            entity.HasKey(e => e.AccountGroupId).HasName("PK__AccountG__49A6ED3B495C0420");
+
+            entity.ToTable("AccountGroup");
+
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.Type).HasMaxLength(50);
+
+            entity.HasOne(d => d.Company).WithMany(p => p.AccountGroups)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__AccountGr__Compa__4316F928");
+
+            entity.HasOne(d => d.ParentGroup).WithMany(p => p.InverseParentGroup)
+                .HasForeignKey(d => d.ParentGroupId)
+                .HasConstraintName("FK__AccountGr__Paren__440B1D61");
+        });
+
+        modelBuilder.Entity<AccountHead>(entity =>
+        {
+            entity.HasKey(e => e.AccountHeadId).HasName("PK__AccountH__0F830A99ACE7C29F");
+
+            entity.ToTable("AccountHead");
+
+            entity.Property(e => e.Code).HasMaxLength(50);
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.Name).HasMaxLength(200);
+
+            entity.HasOne(d => d.AccountGroup).WithMany(p => p.AccountHeads)
+                .HasForeignKey(d => d.AccountGroupId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__AccountHe__Accou__48CFD27E");
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.AccountHeads)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__AccountHe__Branc__47DBAE45");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.AccountHeads)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__AccountHe__Compa__46E78A0C");
+        });
+
         modelBuilder.Entity<AppUser>(entity =>
         {
             entity.ToTable("AppUser");
@@ -220,6 +285,21 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.UserName)
                 .HasMaxLength(200)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Branch>(entity =>
+        {
+            entity.HasKey(e => e.BranchId).HasName("PK__Branch__A1682FC5850CE61C");
+
+            entity.ToTable("Branch");
+
+            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.Name).HasMaxLength(200);
+
+            entity.HasOne(d => d.Company).WithMany(p => p.Branches)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Branch__CompanyI__3A81B327");
         });
 
         modelBuilder.Entity<ChatFile>(entity =>
@@ -244,7 +324,40 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Receiver).HasMaxLength(100);
             entity.Property(e => e.Sender).HasMaxLength(100);
             entity.Property(e => e.SentDate).HasColumnType("datetime");
-            entity.Property(e => e.Text).HasColumnType("text");
+        });
+
+        modelBuilder.Entity<Company>(entity =>
+        {
+            entity.HasKey(e => e.CompanyId).HasName("PK__Company__2D971CACD5EC4FD9");
+
+            entity.ToTable("Company");
+
+            entity.Property(e => e.Address).HasMaxLength(500);
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.Name).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<FinancialYear>(entity =>
+        {
+            entity.HasKey(e => e.FinancialYearId).HasName("PK__Financia__6ECE4C91A953A74D");
+
+            entity.ToTable("FinancialYear");
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.FinancialYears)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Financial__Compa__3D5E1FD2");
+        });
+
+        modelBuilder.Entity<LockEntry>(entity =>
+        {
+            entity.HasKey(e => e.LockEntryId).HasName("PK__LockEntr__3C6AF80096C88E6B");
+
+            entity.Property(e => e.LockEnd).HasColumnType("datetime");
+            entity.Property(e => e.LockStart).HasColumnType("datetime");
+            entity.Property(e => e.Reason).HasMaxLength(255);
         });
 
         modelBuilder.Entity<PayDepartment>(entity =>
@@ -472,6 +585,99 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Usertype)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<SubLedger>(entity =>
+        {
+            entity.HasKey(e => e.SubLedgerId).HasName("PK__SubLedge__9749B1E6D60D001C");
+
+            entity.ToTable("SubLedger");
+
+            entity.Property(e => e.Contact).HasMaxLength(200);
+            entity.Property(e => e.Name).HasMaxLength(200);
+            entity.Property(e => e.ReferenceId).HasMaxLength(100);
+            entity.Property(e => e.Type).HasMaxLength(50);
+
+            entity.HasOne(d => d.Company).WithMany(p => p.SubLedgers)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__SubLedger__Compa__4D94879B");
+        });
+
+        modelBuilder.Entity<VoucherAudit>(entity =>
+        {
+            entity.HasKey(e => e.AuditId).HasName("PK__VoucherA__A17F2398FA3F640F");
+
+            entity.ToTable("VoucherAudit");
+
+            entity.Property(e => e.Action).HasMaxLength(100);
+            entity.Property(e => e.ActionAt).HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.ActionBy).HasMaxLength(200);
+        });
+
+        modelBuilder.Entity<VoucherEntry>(entity =>
+        {
+            entity.HasKey(e => e.EntryId).HasName("PK__VoucherE__F57BD2F7A27EE934");
+
+            entity.ToTable("VoucherEntry");
+
+            entity.HasIndex(e => e.AccountHeadId, "IDX_VoucherEntry_AccountHead");
+
+            entity.HasIndex(e => e.SubLedgerId, "IDX_VoucherEntry_SubLedger");
+
+            entity.Property(e => e.Credit).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Debit).HasColumnType("decimal(18, 2)");
+            entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.LineOrder).HasDefaultValue(1);
+            entity.Property(e => e.SignedAmount)
+                .HasComputedColumnSql("([Debit]-[Credit])", true)
+                .HasColumnType("decimal(19, 2)");
+
+            entity.HasOne(d => d.AccountHead).WithMany(p => p.VoucherEntries)
+                .HasForeignKey(d => d.AccountHeadId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VoucherEn__Accou__5812160E");
+
+            entity.HasOne(d => d.SubLedger).WithMany(p => p.VoucherEntries)
+                .HasForeignKey(d => d.SubLedgerId)
+                .HasConstraintName("FK__VoucherEn__SubLe__59063A47");
+
+            entity.HasOne(d => d.Voucher).WithMany(p => p.VoucherEntries)
+                .HasForeignKey(d => d.VoucherId)
+                .HasConstraintName("FK__VoucherEn__Vouch__571DF1D5");
+        });
+
+        modelBuilder.Entity<VoucherHeader>(entity =>
+        {
+            entity.HasKey(e => e.VoucherId).HasName("PK__VoucherH__3AEE7921FAEFAFFF");
+
+            entity.ToTable("VoucherHeader");
+
+            entity.HasIndex(e => new { e.CompanyId, e.Date }, "IDX_VoucherHeader_CompanyDate");
+
+            entity.HasIndex(e => new { e.CompanyId, e.FinancialYearId, e.VoucherNo }, "UX_Voucher_Company_FY_No").IsUnique();
+
+            entity.Property(e => e.CreatedAt).HasDefaultValueSql("(sysutcdatetime())");
+            entity.Property(e => e.CreatedBy).HasMaxLength(200);
+            entity.Property(e => e.ModifiedBy).HasMaxLength(200);
+            entity.Property(e => e.Narration).HasMaxLength(1000);
+            entity.Property(e => e.Reference).HasMaxLength(200);
+            entity.Property(e => e.VoucherNo).HasMaxLength(50);
+            entity.Property(e => e.VoucherType).HasMaxLength(50);
+
+            entity.HasOne(d => d.Branch).WithMany(p => p.VoucherHeaders)
+                .HasForeignKey(d => d.BranchId)
+                .HasConstraintName("FK__VoucherHe__Branc__5165187F");
+
+            entity.HasOne(d => d.Company).WithMany(p => p.VoucherHeaders)
+                .HasForeignKey(d => d.CompanyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VoucherHe__Compa__5070F446");
+
+            entity.HasOne(d => d.FinancialYear).WithMany(p => p.VoucherHeaders)
+                .HasForeignKey(d => d.FinancialYearId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__VoucherHe__Finan__52593CB8");
         });
 
         OnModelCreatingPartial(modelBuilder);

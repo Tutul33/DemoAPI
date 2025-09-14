@@ -49,10 +49,10 @@ namespace Sonali.API.Infrastructure.DAL.Repository
                 //return Task.FromResult(_mapper.Map<UserDTO>(user));
                 return userDto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
-                throw;
+                throw ex;
             }
         }
 

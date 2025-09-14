@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Sonali.API.Domain.DTOs;
+using Sonali.API.Domain.Entities;
 using Sonali.API.Domain.Interface;
 using Sonali.API.DomainService.Interface;
 using Sonali.API.Utilities;
@@ -130,8 +131,23 @@ namespace Sonali.API.Controllers
                 ex.ToString();
             }
             return data;
-        }      
+        }
 
-       
+        [Authorize]
+        [HttpPost]
+        [Route("SaveUpdateVoucher")]
+        public async Task<object?> CreateVoucher(VoucherModelDTO dto)
+        {
+            object? data = null;
+            try
+            {
+                data = await _iRepository.SaveUpdateVoucher(dto);
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+            return data;
+        }
     }
 }

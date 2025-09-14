@@ -55,6 +55,10 @@ namespace Sonali.API.Infrastructure.DAL.Base
             CreateMap<ChatFiles, ChatFile>();
             CreateMap<ChatMessage, ChatMessageDto>();
             CreateMap<ChatMessageDto, ChatMessage>();
+            CreateMap<VoucherModelDTO, VoucherHeader>();
+            CreateMap<VoucherHeader, VoucherModelDTO>();
+            CreateMap<VoucherDetailDto, VoucherEntry>();
+            CreateMap<VoucherEntry, VoucherDetailDto>();
         }
     }
 }

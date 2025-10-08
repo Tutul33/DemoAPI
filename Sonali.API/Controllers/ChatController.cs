@@ -7,6 +7,7 @@ using Sonali.API.Domain.DTOs;
 using Sonali.API.Domain.Entities;
 using Sonali.API.Domain.Interface;
 using Sonali.API.DomainService.Interface;
+using Sonali.API.DomainService.Repository;
 using Sonali.API.Hubs;
 using Sonali.API.Utilities;
 using Sonali.API.Utilities.FileManagement;
@@ -21,12 +22,16 @@ namespace Sonali.API.Controllers
         private readonly FileUploadSettings _settings;
         private readonly IChatRepository _repo;
         private readonly IChatDomainService _repoDomain;
-        public ChatController(IHubContext<ChatHub> hub, IOptions<FileUploadSettings> settings, IChatRepository repo, IChatDomainService repoDomain)
+        private readonly IAgentService _agentService;
+        private readonly IAIAssistantService _aiAssistantService;
+        public ChatController(IHubContext<ChatHub> hub, IOptions<FileUploadSettings> settings, IChatRepository repo, IChatDomainService repoDomain,IAgentService agentService, IAIAssistantService aiAssistantService)
         {
             _hub = hub;
             _settings = settings.Value;
             _repo = repo;
             _repoDomain = repoDomain;
+            _agentService = agentService;
+            _aiAssistantService= aiAssistantService;
         }
 
         [HttpPost("send/{receiver}")]
@@ -65,6 +70,16 @@ namespace Sonali.API.Controllers
                 await _hub.Clients.Client(connId).SendAsync("ReceiveFile", sender, messageDto);
             }
 
+            // Fallback to AI if no agent is online
+            if (!_agentService.IsAnyAgentAvailable())
+            {
+                var reply = await _aiAssistantService.HandleMessageAsync(messageDto);
+                var connIdsender = ChatHub.GetConnectionId(sender);
+                if (!string.IsNullOrEmpty(connIdsender))
+                {
+                    await _hub.Clients.Client(connIdsender).SendAsync("ReceiveMessage", "AI_Assistant", reply);
+                }
+            }
             return Ok(messageDto); // return URL to sender
         }
 

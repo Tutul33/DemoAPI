@@ -4,7 +4,6 @@ using Sonali.API.DomainService.Interface;
 using Sonali.API.DomainService.Repository;
 using Sonali.API.Infrastructure.DAL.Cache;
 using Sonali.API.Infrastructure.DAL.Repository;
-using Sonali.API.Middlewares;
 using Sonali.API.Utilities.FileManagement;
 using Sonali.API.Utilities.ReportManagement;
 
@@ -19,6 +18,12 @@ namespace Sonali.API.ServicesRegister
             builder.Services.AddScoped<IRdlcService, RdlcService>();
             builder.Services.AddScoped(typeof(IGenericFactoryMSSQL<>), typeof(GenericFactoryMSSQL<>));
             builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+            builder.Services.AddSingleton<IAgentService, AgentService>();
+            builder.Services.AddSingleton<IMLIntentService, MLIntentService>();
+            builder.Services.AddSingleton<IKnowledgeBaseService, KnowledgeBaseService>();
+            builder.Services.AddScoped<IAIAssistantService,AIAssistantService>();
+
 
             builder.Services.AddScoped<ILoginRepository, LoginRepository>();
             builder.Services.AddScoped<IUserRepository, UserRepository>();

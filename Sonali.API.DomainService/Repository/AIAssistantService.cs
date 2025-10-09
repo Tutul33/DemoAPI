@@ -19,17 +19,14 @@ namespace Sonali.API.DomainService.Repository
             _kb = kb;
         }
 
-        public async Task<ChatMessageFileDto> HandleMessageAsync(ChatMessageFileDto message)
+        public async Task<BotMessageDto> HandleMessageAsync(BotMessageDto dto)
         {
-            var intent = _ml.PredictIntent(message.Text ?? "");
+            var intent = _ml.PredictIntent(dto.Message ?? "");
             var answer = _kb.GetAnswer(intent) ?? "Please wait, a representative will contact you soon.";
 
-            var reply = new ChatMessageFileDto
+            var reply = new BotMessageDto
             {
-                Sender = "AI_Assistant",
-                Receiver = message.Sender,
-                Text = answer,
-                SentDate = DateTime.UtcNow
+                Message = answer
             };
 
             return reply;

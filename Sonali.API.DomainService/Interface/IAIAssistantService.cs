@@ -9,6 +9,6 @@ namespace Sonali.API.DomainService.Interface
 {
     public interface IAIAssistantService
     {
-        Task<ChatMessageFileDto> HandleMessageAsync(ChatMessageFileDto message);
+        Task<BotMessageDto> HandleMessageAsync(BotMessageDto message);
     }
 }

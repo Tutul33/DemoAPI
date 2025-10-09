@@ -70,17 +70,23 @@ namespace Sonali.API.Controllers
                 await _hub.Clients.Client(connId).SendAsync("ReceiveFile", sender, messageDto);
             }
 
-            // Fallback to AI if no agent is online
-            if (!_agentService.IsAnyAgentAvailable())
-            {
-                var reply = await _aiAssistantService.HandleMessageAsync(messageDto);
-                var connIdsender = ChatHub.GetConnectionId(sender);
-                if (!string.IsNullOrEmpty(connIdsender))
-                {
-                    await _hub.Clients.Client(connIdsender).SendAsync("ReceiveMessage", "AI_Assistant", reply);
-                }
-            }
             return Ok(messageDto); // return URL to sender
+        }
+        
+        [HttpPost("ChatWithBOT")]
+        public async Task<IActionResult> ChatWithBOT([FromBody] BotMessageDto dto)
+        {
+            try
+            {
+                var reply = await _aiAssistantService.HandleMessageAsync(dto);
+
+                return Ok(reply); 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         [HttpGet("download/{fileType}/{fileName}")]

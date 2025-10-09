@@ -29,5 +29,8 @@ namespace Sonali.API.Domain.DTOs
         public string FileUrl { get; set; }
         public List<ChatFiles>? Files { get; set; } = new List<ChatFiles>();
     }
-
+    public class BotMessageDto
+    {
+        public string Message { get; set; }= string.Empty;
+    }
 }

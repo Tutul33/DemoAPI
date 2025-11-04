@@ -5,11 +5,6 @@ using Sonali.API.Domain.Entities;
 using Sonali.API.Domain.Interface;
 using Sonali.API.Infrastructure.Data.Data;
 using Sonali.API.Infrastructure.Data.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Sonali.API.Infrastructure.DAL.Repository
 {

@@ -40,11 +40,7 @@ namespace Sonali.API.DomainService.Repository
                     { "PageSize", param.PageSize }
                 };
 
-                var users = await _userRepo.ExecuteCommandListAsync(
-                    StoredProcedures.sp_GetUserList,
-                    parameters,
-                    StaticInfos.MsSqlConnectionString
-                ) ?? new List<User>();
+                var users = await _userRepo.ExecuteCommandListAsync(StoredProcedures.sp_GetUserList,parameters,StaticInfos.MsSqlConnectionString) ?? new List<User>();
 
                 return new { list = users };
             }
@@ -59,11 +55,7 @@ namespace Sonali.API.DomainService.Repository
         {
             try
             {
-                var users = await _userRoleMapRepo.ExecuteCommandListAsync(
-                    StoredProcedures.sp_GetUsersRoleMap,
-                    new Dictionary<string, object?>(),
-                    StaticInfos.MsSqlConnectionString
-                ) ?? new List<UserRoleMapDTO>();
+                var users = await _userRoleMapRepo.ExecuteCommandListAsync(StoredProcedures.sp_GetUsersRoleMap,new Dictionary<string, object?>(),StaticInfos.MsSqlConnectionString) ?? new List<UserRoleMapDTO>();
 
                 return new { list = users };
             }
@@ -77,11 +69,7 @@ namespace Sonali.API.DomainService.Repository
         {
             try
             {
-                var users = await _userRoleRepo.ExecuteCommandListAsync(
-                    StoredProcedures.sp_GetFinanceAndAccountUsersRole,
-                    new Dictionary<string, object?>(),
-                    StaticInfos.MsSqlConnectionString
-                ) ?? new List<UserRoleDTO>();
+                var users = await _userRoleRepo.ExecuteCommandListAsync(StoredProcedures.sp_GetFinanceAndAccountUsersRole,new Dictionary<string, object?>(),StaticInfos.MsSqlConnectionString) ?? new List<UserRoleDTO>();
 
                 return new { list = users };
             }
